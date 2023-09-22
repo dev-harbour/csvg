@@ -54,7 +54,7 @@ void svg_close( SVG *svg )
 
 void svg_rect( SVG *svg, int x, int y, int width, int height, int stroke_width, unsigned int color )
 {
-   fprintf( svg->file, "<rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" stroke=\"#%06x\" stroke-width=\"%d\" fill=\"none\"/>\n", x, y, width, height, color, stroke_width );
+   fprintf( svg->file, "<rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" stroke-width=\"%d\" stroke=\"#%06x\" fill=\"none\"/>\n", x, y, width, height, stroke_width, color );
 }
 
 void svg_filled_rect( SVG *svg, int x, int y, int width, int height, unsigned int color )
@@ -64,7 +64,7 @@ void svg_filled_rect( SVG *svg, int x, int y, int width, int height, unsigned in
 
 void svg_triangle( SVG *svg, int x1, int y1, int x2, int y2, int x3, int y3, int stroke_width, unsigned int color )
 {
-   fprintf( svg->file, "<polygon points=\"%d,%d %d,%d %d,%d\" stroke=\"#%06x\" stroke-width=\"%d\" fill=\"none\"/>\n", x1, y1, x2, y2, x3, y3, color, stroke_width );
+   fprintf( svg->file, "<polygon points=\"%d,%d %d,%d %d,%d\" stroke-width=\"%d\" stroke=\"#%06x\" fill=\"none\"/>\n", x1, y1, x2, y2, x3, y3, stroke_width, color );
 }
 
 void svg_filled_triangle( SVG *svg, int x1, int y1, int x2, int y2, int x3, int y3, unsigned int color )
@@ -74,7 +74,7 @@ void svg_filled_triangle( SVG *svg, int x1, int y1, int x2, int y2, int x3, int 
 
 void svg_circle( SVG *svg, int cx, int cy, int r, int stroke_width, unsigned int color )
 {
-   fprintf( svg->file, "<circle cx=\"%d\" cy=\"%d\" r=\"%d\" stroke=\"#%06x\" stroke-width=\"%d\" fill=\"none\"/>\n", cx, cy, r, color, stroke_width );
+   fprintf( svg->file, "<circle cx=\"%d\" cy=\"%d\" r=\"%d\" stroke-width=\"%d\" stroke=\"#%06x\" fill=\"none\"/>\n", cx, cy, r, stroke_width, color );
 }
 
 void svg_filled_circle( SVG *svg, int cx, int cy, int r, unsigned int color )
@@ -84,7 +84,7 @@ void svg_filled_circle( SVG *svg, int cx, int cy, int r, unsigned int color )
 
 void svg_line( SVG *svg, int x1, int y1, int x2, int y2, int stroke_width, unsigned int color )
 {
-   fprintf( svg->file, "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"stroke:#%06x; stroke-width:%d\" />\n", x1, y1, x2, y2, color, stroke_width );
+   fprintf( svg->file, "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"stroke-width:%d; stroke:#%06x\" />\n", x1, y1, x2, y2, stroke_width, color );
 }
 
 void svg_hexagon( SVG *svg, int hx, int hy, int r, int stroke_width, bool type, unsigned int color )
@@ -103,7 +103,7 @@ void svg_hexagon( SVG *svg, int hx, int hy, int r, int stroke_width, bool type, 
       fprintf( svg->file, "%.2lf,%.2lf ", x, y );
    }
 
-   fprintf( svg->file, "\" stroke=\"#%06x\" stroke-width=\"%d\"", color, stroke_width );
+   fprintf( svg->file, "\" stroke-width=\"%d\" stroke=\"#%06x\"", stroke_width, color );
    fprintf( svg->file, " fill=\"none\"/>\n" );
 }
 
@@ -125,6 +125,16 @@ void svg_filled_hexagon( SVG *svg, int hx, int hy, int r, bool type, unsigned in
 
    fprintf( svg->file, "\" stroke=\"#%06x\" stroke-width=\"1\"", color );
    fprintf( svg->file, " fill=\"#%06x\"/>\n", color );
+}
+
+void svg_ellipse( SVG *svg, int cx, int cy, int rx, int ry, int stroke_width, unsigned int color )
+{
+   fprintf( svg->file, "<ellipse cx=\"%d\" cy=\"%d\" rx=\"%d\" ry=\"%d\" stroke=\"#%06x\" stroke-width=\"%d\" fill=\"none\"/>\n", cx, cy, rx, ry, color, stroke_width );
+}
+
+void svg_filled_ellipse( SVG *svg, int cx, int cy, int rx, int ry, unsigned int fill_color )
+{
+   fprintf( svg->file, "<ellipse cx=\"%d\" cy=\"%d\" rx=\"%d\" ry=\"%d\" fill=\"#%06x\"/>\n", cx, cy, rx, ry, fill_color );
 }
 
 void svg_text( SVG *svg, int x, int y, const char *text, const char *font, int size, unsigned int color )

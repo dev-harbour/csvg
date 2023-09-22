@@ -41,6 +41,9 @@ void svg_line( SVG *svg, int x1, int y1, int x2, int y2, int stroke_width, unsig
 void svg_hexagon( SVG *svg, int hx, int hy, int r, int stroke_width, bool type, unsigned int color );
 void svg_filled_hexagon( SVG *svg, int hx, int hy, int r, bool type, unsigned int color );
 
+void svg_ellipse( SVG *svg, int cx, int cy, int rx, int ry, int stroke_width, unsigned int color );
+void svg_filled_ellipse( SVG *svg, int cx, int cy, int rx, int ry, unsigned int fill_color );
+
 void svg_text( SVG *svg, int x, int y, const char *text, const char *font, int size, unsigned int color );
 
 #endif /* CSVG_H */

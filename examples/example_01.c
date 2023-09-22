@@ -1,17 +1,7 @@
-<div align="center">
-   <h1 align="center">csvg: A Simple SVG Library in C</h1>
-</div>
-<br />
+/*
+ * 
+ */
 
-`csvg` is a minimalistic library for creating Scalable Vector Graphics (SVG) files using the C programming language. This library adheres to the [W3C SVG](https://www.w3.org/TR/SVG2/) standard and is designed to simplify various graphic tasks.
-
-### Getting Started
-
-For more info see [getting started](examples/README.md).
-
-### Example
-
-``` c
 #include "csvg.h"
 
 int main()
@@ -52,9 +42,3 @@ int main()
    svg_close( svg );
    return 0;
 }
-```
-
-![Main](docs/assets/img/example_01.svg)
-
-### Contributing
-Contributions are welcome! Feel free to submit a pull request.

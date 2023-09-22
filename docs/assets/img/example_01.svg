@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" width="830" height="450">
+<rect x="0" y="0" width="830" height="450" fill="#530972"/>
+<polygon points="596.87,330.00 415.00,435.00 233.13,330.00 233.13,120.00 415.00,15.00 596.87,120.00 596.87,330.00 " stroke="#faf2fe" stroke-width="6" fill="none"/>
+<polygon points="588.21,325.00 415.00,425.00 241.79,325.00 241.79,125.00 415.00,25.00 588.21,125.00 588.21,325.00 " stroke="#5c6bbf" stroke-width="1" fill="#5c6bbf"/>
+<polygon points="415,225 588,325 415,425" fill="#283492"/>
+<polygon points="415,225 415,425 241,325" fill="#283492"/>
+<circle cx="415" cy="225" r="100" stroke="#ffffff" stroke-width="66" fill="none"/>
+<polygon points="415,225 588,124 588,325" fill="#3848aa"/>
+</svg>

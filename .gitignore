@@ -1,0 +1,9 @@
+# csvg
+*.bak
+*.exe
+*.hbc
+*.hbm
+*.hbp
+*.hbmk
+lib
+tmp

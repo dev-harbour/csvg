@@ -16,6 +16,5 @@ int main()
    svg_line( svg, 50, 50, 200, 200, 4, 0x0000FF );
 
    svg_close( svg );
-
    return 0;
 }

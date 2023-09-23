@@ -45,6 +45,17 @@ void svg_filled_hexagon( SVG *svg, int hx, int hy, int r, bool type, unsigned in
 void svg_ellipse( SVG *svg, int cx, int cy, int rx, int ry, int stroke_width, unsigned int color );
 void svg_filled_ellipse( SVG *svg, int cx, int cy, int rx, int ry, unsigned int fill_color );
 
+void svg_bezier_curve( SVG *svg, int *points, int point_count, int stroke_width, unsigned int color );
+
 void svg_text( SVG *svg, int x, int y, const char *text, const char *font, int size, unsigned int color );
+
+void svg_linear_gradient( SVG *svg, const char *id, unsigned int startColor, unsigned int endColor, float x1, float y1, float x2, float y2 );
+void svg_triangle_linear_gradient( SVG *svg, int x1, int y1, int x2, int y2, int x3, int y3, unsigned int startColor, unsigned int endColor );
+
+void svg_radial_gradient( SVG *svg, const char *id, unsigned int innerColor, unsigned int outerColor, float cx, float cy, float r );
+void svg_triangle_radial_gradient( SVG *svg, int x1, int y1, int x2, int y2, int x3, int y3, unsigned int startColor, unsigned int endColor );
+
+void svg_rect_gradient( SVG *svg, int x, int y, int width, int height, const char *gradient_id );
+void svg_circle_gradient( SVG *svg, int cx, int cy, int r, const char *gradient_id );
 
 #endif /* CSVG_H */

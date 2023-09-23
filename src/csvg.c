@@ -152,7 +152,89 @@ void svg_filled_ellipse( SVG *svg, int cx, int cy, int rx, int ry, unsigned int 
    fprintf( svg->file, "<ellipse cx=\"%d\" cy=\"%d\" rx=\"%d\" ry=\"%d\" fill=\"#%06x\"/>\n", cx, cy, rx, ry, fill_color );
 }
 
+void svg_bezier_curve( SVG *svg, int *points, int point_count, int stroke_width, unsigned int color )
+{
+   if( point_count < 4 ) 
+      return; // Bezier curve requires at least 4 points (two control points, start point and end point)
+
+   fprintf( svg->file, "<path d=\"M %d %d ", points[ 0 ], points[ 1 ] );
+
+   for( int i = 2; i < point_count * 2; i += 6 )
+   {
+      fprintf( svg->file, "C %d %d, %d %d, %d %d ", points[ i ], points[ i + 1 ], points[ i + 2 ], points[ i + 3 ], points[ i + 4 ], points[ i + 5 ] );
+   }
+
+   fprintf( svg->file, "\" stroke=\"#%06x\" stroke-width=\"%d\" fill=\"none\"/>\n", color, stroke_width );
+}
+
 void svg_text( SVG *svg, int x, int y, const char *text, const char *font, int size, unsigned int color )
 {
    fprintf( svg->file, "<text x=\"%d\" y=\"%d\" font-family=\"%s\" font-size=\"%d\" fill=\"#%06x\">%s</text>\n", x, y, font, size, color, text );
+}
+
+/* Linear gradient */
+void svg_linear_gradient( SVG *svg, const char *id, unsigned int startColor, unsigned int endColor, float x1, float y1, float x2, float y2 )
+{
+   fprintf( svg->file, "<defs>\n" );
+   fprintf( svg->file, "<linearGradient id=\"%s\" x1=\"%f%%\" y1=\"%f%%\" x2=\"%f%%\" y2=\"%f%%\">\n", id, x1, y1, x2, y2 );
+   fprintf( svg->file, "<stop offset=\"0%%\" style=\"stop-color:#%06x;stop-opacity:1\" />\n", startColor );
+   fprintf( svg->file, "<stop offset=\"100%%\" style=\"stop-color:#%06x;stop-opacity:1\" />\n", endColor );
+   fprintf( svg->file, "</linearGradient>\n" );
+   fprintf( svg->file, "</defs>\n" );
+}
+
+void svg_triangle_linear_gradient( SVG *svg, int x1, int y1, int x2, int y2, int x3, int y3, unsigned int startColor, unsigned int endColor )
+{
+   // Definition of a linear gradient triangle
+   static int gradient_id = 0;
+   fprintf( svg->file, "<defs>\n" );
+   fprintf( svg->file, "  <linearGradient id=\"triangleGradient%d\" x1=\"0%%\" y1=\"0%%\" x2=\"100%%\" y2=\"0%%\">\n", gradient_id );
+   fprintf( svg->file, "    <stop offset=\"0%%\" style=\"stop-color:#%06x;stop-opacity:1\" />\n", startColor );
+   fprintf( svg->file, "    <stop offset=\"100%%\" style=\"stop-color:#%06x;stop-opacity:1\" />\n", endColor );
+   fprintf( svg->file, "  </linearGradient>\n" );
+   fprintf( svg->file, "</defs>\n" );
+
+   // Drawing a triangle with a gradient
+   fprintf( svg->file, "<polygon points=\"%d,%d %d,%d %d,%d\" fill=\"url(#triangleGradient%d)\"/>\n", x1, y1, x2, y2, x3, y3, gradient_id );
+
+   gradient_id++; // Increment the gradient ID
+}
+
+/* Radial gradient */
+void svg_radial_gradient( SVG *svg, const char *id, unsigned int innerColor, unsigned int outerColor, float cx, float cy, float r )
+{
+   fprintf( svg->file, "<defs>\n" );
+   fprintf( svg->file, "<radialGradient id=\"%s\" cx=\"%f%%\" cy=\"%f%%\" r=\"%f%%\">\n", id, cx, cy, r );
+   fprintf( svg->file, "<stop offset=\"0%%\" style=\"stop-color:#%06x;stop-opacity:1\"/>\n", innerColor );
+   fprintf( svg->file, "<stop offset=\"100%%\" style=\"stop-color:#%06x;stop-opacity:1\"/>\n", outerColor );
+   fprintf( svg->file, "</radialGradient>\n" );
+   fprintf( svg->file, "</defs>\n" );
+}
+
+void svg_triangle_radial_gradient( SVG *svg, int x1, int y1, int x2, int y2, int x3, int y3, unsigned int startColor, unsigned int endColor )
+{
+    
+   // Definition of a radial gradient triangle
+   static int gradient_id = 0;
+   fprintf( svg->file, "<defs>\n" );
+   fprintf( svg->file, "  <radialGradient id=\"triangleRadialGradient%d\" cx=\"50%%\" cy=\"50%%\" r=\"50%%\">\n", gradient_id );
+   fprintf( svg->file, "    <stop offset=\"0%%\" style=\"stop-color:#%06x;stop-opacity:1\" />\n", startColor );
+   fprintf( svg->file, "    <stop offset=\"100%%\" style=\"stop-color:#%06x;stop-opacity:1\" />\n", endColor );
+   fprintf( svg->file, "  </radialGradient>\n" );
+   fprintf( svg->file, "</defs>\n" );
+
+   // Drawing a triangle with a gradient 
+   fprintf( svg->file, "<polygon points=\"%d,%d %d,%d %d,%d\" fill=\"url(#triangleRadialGradient%d)\"/>\n", x1, y1, x2, y2, x3, y3, gradient_id );
+
+   gradient_id++; // Increment the gradient ID
+}
+
+void svg_rect_gradient( SVG *svg, int x, int y, int width, int height, const char *gradient_id )
+{
+   fprintf( svg->file, "<rect x=\"%d\" y=\"%d\" width=\"%d\" height=\"%d\" fill=\"url(#%s)\"/>\n", x, y, width, height, gradient_id );
+}
+
+void svg_circle_gradient( SVG *svg, int cx, int cy, int r, const char *gradient_id )
+{
+   fprintf( svg->file, "<circle cx=\"%d\" cy=\"%d\" r=\"%d\" fill=\"url(#%s)\"/>\n", cx, cy, r, gradient_id );
 }

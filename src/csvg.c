@@ -27,7 +27,7 @@ SVG *svg_init( const char *filename, int width, int height )
    fprintf( svg->file, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" );
    fprintf( svg->file, "<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" " );
    fprintf( svg->file, "\"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n" );
-   fprintf( svg->file, "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"%d\" height=\"%d\">\n", width, height );
+   fprintf( svg->file, "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"%d\" height=\"%d\" viewBox=\"0 0 %d %d\">\n", svg->width, svg->height, svg->width, svg->height );
 
    return svg;
 }
@@ -85,6 +85,21 @@ void svg_filled_circle( SVG *svg, int cx, int cy, int r, unsigned int color )
 void svg_line( SVG *svg, int x1, int y1, int x2, int y2, int stroke_width, unsigned int color )
 {
    fprintf( svg->file, "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" style=\"stroke-width:%d; stroke:#%06x\" />\n", x1, y1, x2, y2, stroke_width, color );
+}
+
+void svg_polyline( SVG *svg, int *points, int point_count, int stroke_width, unsigned int color )
+{
+   if( svg == NULL || points == NULL || point_count < 2 )
+      return;
+
+   fprintf( svg->file, "<polyline points=\"" );
+
+   for( int i = 0; i < point_count; ++i )
+   {
+      fprintf( svg->file, "%d,%d ", points[ 2 * i ], points[ 2 * i + 1 ] );
+   }
+
+   fprintf( svg->file, "\" stroke-width=\"%d\" stroke=\"#%06x\" fill=\"none\"/>\n", stroke_width, color );
 }
 
 void svg_hexagon( SVG *svg, int hx, int hy, int r, int stroke_width, bool type, unsigned int color )

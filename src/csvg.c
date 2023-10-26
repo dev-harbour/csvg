@@ -32,9 +32,24 @@ SVG *svg_init( const char *filename, int width, int height )
    return svg;
 }
 
-void svg_set_background( SVG *svg, unsigned int color )
+void svg_set_background( SVG *svg, unsigned long hexColor )
 {
-   svg_filled_rect( svg, 0, 0, svg->width, svg->height, color );
+   if( hexColor <= 0xFFFFFF )
+   {
+      // No alpha channel, use full opacity
+      fprintf( svg->file, "<rect x=\"0\" y=\"0\" width=\"%d\" height=\"%d\" fill=\"#%06lX\" fill-opacity=\"1\"/>\n", svg->width, svg->height, hexColor );
+   }
+   else if( hexColor <= 0xFFFFFFFF )
+   {
+      // Alpha channel is available
+      double a = ( hexColor & 0xFF ) / 255.0;
+      unsigned int color = ( hexColor >> 8 ) & 0xFFFFFF;
+      fprintf( svg->file, "<rect x=\"0\" y=\"0\" width=\"%d\" height=\"%d\" fill=\"#%06X\" fill-opacity=\"%f\"/>\n", svg->width, svg->height, color, a );
+   }
+   else
+   {
+      fprintf( stderr, "Invalid hex value passed\n" );
+   }
 }
 
 void svg_close( SVG *svg )
@@ -45,10 +60,10 @@ void svg_close( SVG *svg )
       fclose( svg->file );
       free( svg );
    }
-   else 
+   else
    {
       fprintf( stderr, "Error: svg_close called with NULL SVG pointer.\n" );
-      return; // Do nothing if SVG is NULL 
+      return; // Do nothing if SVG is NULL
    }
 }
 
@@ -102,15 +117,66 @@ void svg_polyline( SVG *svg, int *points, int point_count, int stroke_width, uns
    fprintf( svg->file, "\" stroke-width=\"%d\" stroke=\"#%06x\" fill=\"none\"/>\n", stroke_width, color );
 }
 
+void svg_arrow( SVG *svg, int x1, int y1, int x2, int y2, int stroke_width, unsigned int color )
+{
+   // Draw a line from ( x1, y1 ) to ( x2, y2 )
+   svg_line( svg, x1, y1, x2, y2, stroke_width, color );
+
+   // Calculate the angle of the line
+   double angle = atan2( ( double )( y2 - y1 ), ( double )( x2 - x1 ) );
+
+   // Length of the arrow head
+   int arrow_length = 10;
+
+   // Angles for the arrow heads
+   double angle1 = angle + M_PI / 6.0;
+   double angle2 = angle - M_PI / 6.0;
+
+   // Calculate the endpoints for the arrow head
+   int x3 = x2 - ( int ) ( arrow_length * cos( angle1 ) );
+   int y3 = y2 - ( int ) ( arrow_length * sin( angle1 ) );
+
+   int x4 = x2 - ( int ) ( arrow_length * cos( angle2 ) );
+   int y4 = y2 - ( int ) ( arrow_length * sin( angle2 ) );
+
+   // Draw the "head" of the arrow
+   svg_line( svg, x2, y2, x3, y3, stroke_width, color );
+   svg_line( svg, x2, y2, x4, y4, stroke_width, color );
+}
+
+void svg_numbered_arrow( SVG *svg, int x1, int y1, int x2, int y2, int stroke_width, int start_num, int end_num, int step, unsigned int color )
+{
+   // Drawing an arrow
+   svg_arrow( svg, x1, y1, x2, y2, stroke_width, color );
+
+   // Determining the number of labels on the arrow
+   int num_labels = ( end_num - start_num ) / step + 1;
+
+   // Determining the spacing between labels on the arrow
+   float dx = ( x2 - x1 ) / ( float ) ( num_labels - 1 );
+   float dy = ( y2 - y1 ) / ( float ) ( num_labels - 1 );
+
+   // Adding labels
+   for( int i = 0; i < num_labels; ++i )
+   {
+      int x = x1 + dx * i;
+      int y = y1 + dy * i;
+      int num = start_num + step * i;
+      char label[ 10 ];
+      sprintf( label, "%d", num );
+      svg_text( svg, x, y, label, "Arial", 12, color );
+   }
+}
+
 void svg_hexagon( SVG *svg, int hx, int hy, int r, int stroke_width, bool type, unsigned int color )
 {
    double a = 2 * M_PI / 6;
    double angle_offset = ( type == 0 ? M_PI_2 : M_PI / 3 ); // Decides the orientation
    double x1 = hx + r * cos( a * 5 + angle_offset );
    double y1 = hy + r * sin( a * 5 + angle_offset );
-  
+
    fprintf( svg->file, "<polygon points=\"%.2lf,%.2lf ", x1, y1 );
-  
+
    for( int i = 0; i < 6; ++i )
    {
       double x = hx + r * cos( a * i + angle_offset );
@@ -128,9 +194,9 @@ void svg_filled_hexagon( SVG *svg, int hx, int hy, int r, bool type, unsigned in
    double angle_offset = ( type == 0 ? M_PI_2 : M_PI / 3 ); // Decides the orientation
    double x1 = hx + r * cos( a * 5 + angle_offset );
    double y1 = hy + r * sin( a * 5 + angle_offset );
-  
+
    fprintf( svg->file, "<polygon points=\"%.2lf,%.2lf ", x1, y1 );
-  
+
    for( int i = 0; i < 6; ++i )
    {
       double x = hx + r * cos( a * i + angle_offset );
@@ -154,7 +220,7 @@ void svg_filled_ellipse( SVG *svg, int cx, int cy, int rx, int ry, unsigned int 
 
 void svg_bezier_curve( SVG *svg, int *points, int point_count, int stroke_width, unsigned int color )
 {
-   if( point_count < 4 ) 
+   if( point_count < 4 )
       return; // Bezier curve requires at least 4 points (two control points, start point and end point)
 
    fprintf( svg->file, "<path d=\"M %d %d ", points[ 0 ], points[ 1 ] );
@@ -213,7 +279,7 @@ void svg_radial_gradient( SVG *svg, const char *id, unsigned int innerColor, uns
 
 void svg_triangle_radial_gradient( SVG *svg, int x1, int y1, int x2, int y2, int x3, int y3, unsigned int startColor, unsigned int endColor )
 {
-    
+
    // Definition of a radial gradient triangle
    static int gradient_id = 0;
    fprintf( svg->file, "<defs>\n" );
@@ -223,7 +289,7 @@ void svg_triangle_radial_gradient( SVG *svg, int x1, int y1, int x2, int y2, int
    fprintf( svg->file, "  </radialGradient>\n" );
    fprintf( svg->file, "</defs>\n" );
 
-   // Drawing a triangle with a gradient 
+   // Drawing a triangle with a gradient
    fprintf( svg->file, "<polygon points=\"%d,%d %d,%d %d,%d\" fill=\"url(#triangleRadialGradient%d)\"/>\n", x1, y1, x2, y2, x3, y3, gradient_id );
 
    gradient_id++; // Increment the gradient ID

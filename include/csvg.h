@@ -24,7 +24,7 @@ typedef struct
 } SVG;
 
 SVG *svg_init( const char* filename, int width, int height );
-void svg_set_background( SVG *svg, unsigned int color );
+void svg_set_background( SVG *svg, unsigned long hexColor );
 void svg_close( SVG *svg );
 
 void svg_rect( SVG *svg, int x, int y, int width, int height, int stroke_width, unsigned int color );
@@ -38,6 +38,9 @@ void svg_filled_circle( SVG *svg, int cx, int cy, int r, unsigned int color );
 
 void svg_line( SVG *svg, int x1, int y1, int x2, int y2, int stroke_width, unsigned int color );
 void svg_polyline( SVG *svg, int *points, int point_count, int stroke_width, unsigned int color );
+
+void svg_arrow( SVG *svg, int x1, int y1, int x2, int y2, int stroke_width, unsigned int color );
+void svg_numbered_arrow( SVG *svg, int x1, int y1, int x2, int y2, int stroke_width, int start_num, int end_num, int step, unsigned int color );
 
 void svg_hexagon( SVG *svg, int hx, int hy, int r, int stroke_width, bool type, unsigned int color );
 void svg_filled_hexagon( SVG *svg, int hx, int hy, int r, bool type, unsigned int color );

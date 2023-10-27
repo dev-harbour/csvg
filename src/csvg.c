@@ -156,7 +156,16 @@ void svg_numbered_arrow( SVG *svg, int x1, int y1, int x2, int y2, int stroke_wi
    float dx = ( x2 - x1 ) / ( float ) ( num_labels - 1 );
    float dy = ( y2 - y1 ) / ( float ) ( num_labels - 1 );
 
-   // Adding labels
+   // If the arrow is vertical, adjust the label positions
+   int label_offset_x = 0;
+   int label_offset_y = 15;
+   if( x1 == x2 )
+   {
+      label_offset_x = -20;  // Start with a default offset
+      label_offset_y = 0;
+   }
+
+   // Adding labels and tick marks
    for( int i = 0; i < num_labels; ++i )
    {
       int x = x1 + dx * i;
@@ -164,7 +173,96 @@ void svg_numbered_arrow( SVG *svg, int x1, int y1, int x2, int y2, int stroke_wi
       int num = start_num + step * i;
       char label[ 10 ];
       sprintf( label, "%d", num );
-      svg_text( svg, x, y, label, "Arial", 12, color );
+
+      // Draw tick mark
+      int tick_length = ( i % 5 == 0 ) ? 10 : 5; // Every fifth tick mark is longer
+      if( x1 == x2 )
+      {
+         svg_line( svg, x - tick_length, y, x, y, 1, color );
+      }
+      else
+      {
+         svg_line( svg, x, y + tick_length, x, y, 1, color );
+      }
+
+      // Adjust the label offset based on the number of digits
+      int num_digits = strlen( label );
+      if( x1 == x2 )  // Only adjust for vertical arrows
+      {
+         label_offset_x = -10 * num_digits;  // Assume each digit is about 10 units wide
+      }
+
+      // Additional adjustment for values 100 or greater
+      if( num >= 100 )
+      {
+         label_offset_x += 3;
+      }
+
+      svg_text( svg, x + label_offset_x, y + label_offset_y, label, "Arial", 12, color );
+   }
+}
+
+void svg_numbered_arrow_xy( SVG *svg, int x1, int y1, int x2, int y3, int stroke_width, int start_num, int end_num, int step, unsigned int color )
+{
+   // Drawing horizontal arrow
+   svg_arrow( svg, x1, y1, x2, y1, stroke_width, color );
+   // Drawing vertical arrow
+   svg_arrow( svg, x1, y1, x1, y3, stroke_width, color );
+
+   // Determining the number of labels on the arrow
+   int num_labels = ( end_num - start_num ) / step + 1;
+
+   // Common adjustments for labels
+   int label_offset_x = 0;
+   int label_offset_y = 15;
+
+   // Adding labels and tick marks for the horizontal arrow
+   float dx = ( x2 - x1 ) / ( float ) ( num_labels - 1 );
+   for( int i = 0; i < num_labels; ++i )
+   {
+      int x = x1 + dx * i;
+      int y = y1;
+      int num = start_num + step * i;
+      char label[ 10 ];
+      sprintf( label, "%d", num );
+
+      // Draw tick mark for horizontal arrow
+      int tick_length = (i % 5 == 0) ? 10 : 5; // Every fifth tick mark is longer
+      svg_line(svg, x, y + tick_length, x, y, 1, color);
+
+      svg_text( svg, x + label_offset_x, y + label_offset_y, label, "Arial", 12, color );
+   }
+
+   // Adding labels and tick marks for the vertical arrow
+   label_offset_x = -20;  // Start with a default offset for vertical labels
+   label_offset_y = 0;
+   float dy = ( y1 - y3 ) / ( float ) ( num_labels - 1 );
+   for( int i = 0; i < num_labels; ++i )
+   {
+      int x = x1;
+      int y = y1 - dy * i;
+      int num = start_num + step * i;
+      char label[ 10 ];
+      sprintf( label, "%d", num );
+
+      // Draw tick mark for vertical arrow
+      int tick_length = (i % 5 == 0) ? 10 : 5; // Every fifth tick mark is longer
+      svg_line(svg, x - tick_length, y, x, y, 1, color);
+
+      // Adjust the label offset based on the number of digits
+      int num_digits = strlen( label );
+      label_offset_x = -10 * num_digits;  // Assume each digit is about 10 units wide
+
+      // Additional adjustment for values 100 or greater
+      if( num >= 100 )
+      {
+         label_offset_x += 3;
+      }
+
+      if( num != 0 )  // Skip zero for the vertical arrow
+      {
+         svg_text( svg, x + label_offset_x, y + label_offset_y, label, "Arial", 12, color );
+      }
    }
 }
 

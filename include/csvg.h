@@ -8,7 +8,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <string.h>
 
 typedef enum bool
 {
@@ -41,6 +41,7 @@ void svg_polyline( SVG *svg, int *points, int point_count, int stroke_width, uns
 
 void svg_arrow( SVG *svg, int x1, int y1, int x2, int y2, int stroke_width, unsigned int color );
 void svg_numbered_arrow( SVG *svg, int x1, int y1, int x2, int y2, int stroke_width, int start_num, int end_num, int step, unsigned int color );
+void svg_numbered_arrow_xy( SVG *svg, int x1, int y1, int x2, int y3, int stroke_width, int start_num, int end_num, int step, unsigned int color );
 
 void svg_hexagon( SVG *svg, int hx, int hy, int r, int stroke_width, bool type, unsigned int color );
 void svg_filled_hexagon( SVG *svg, int hx, int hy, int r, bool type, unsigned int color );

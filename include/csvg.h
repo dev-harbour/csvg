@@ -9,19 +9,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
-typedef enum bool
+typedef struct _SVG  SVG;
+typedef enum   _bool bool;
+
+enum _bool
 {
    F = 0,
    T = ( ! 0 )
-} bool;
+};
 
-typedef struct
+struct _SVG
 {
    FILE *file;
-   int width;
-   int height;
-} SVG;
+   int   width;
+   int   height;
+};
 
 SVG *svg_init( const char* filename, int width, int height );
 void svg_set_background( SVG *svg, unsigned long hexColor );

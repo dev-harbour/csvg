@@ -30,7 +30,7 @@ int main()
    {
       unsigned int color = random_color();
       svg_filled_rect( svg, x_pos, 275 - values[ i ], bar_width, values[ i ], color );
-      svg_text( svg, x_pos, 290, days[ i ], "Arial", 12, 0x000000 ); // Tekst wyrównany do początku słupka
+      svg_text( svg, x_pos, 290, days[ i ], "Arial", 12, FONT_WEIGHT_NORMAL, 0x000000 ); // Tekst wyrównany do początku słupka
       x_pos += bar_width + bar_spacing;  // aktualizacja pozycji X dla następnego słupka
    }
 

@@ -38,7 +38,7 @@ void draw_table( SVG *svg, int nX, int nY, char *aCol[][ 3 ], int numCols, Count
 
       nTextWidth = strlen( xValue ) * 6;
 
-      svg_text( svg, nDX + ( atoi( aCol[ nI ][ 2 ] ) - nTextWidth ) / 2, nY, xValue, "Arial", 10, 0x000000 );
+      svg_text( svg, nDX + ( atoi( aCol[ nI ][ 2 ] ) - nTextWidth ) / 2, nY, xValue, "Arial", 10, FONT_WEIGHT_NORMAL, 0x000000 );
 
       nDX += atoi( aCol[ nI ][ 2 ]);
 
@@ -70,7 +70,7 @@ void draw_table( SVG *svg, int nX, int nY, char *aCol[][ 3 ], int numCols, Count
             xValue = countries[ nI ].NAME;
          }
 
-         svg_text( svg, nDX + 10, nY + 10, xValue, "Arial", 10, 0x000000 );
+         svg_text( svg, nDX + 10, nY + 10, xValue, "Arial", 10, FONT_WEIGHT_NORMAL, 0x000000 );
          nDX += atoi( aCol[ j ][ 2 ] );
       }
 
@@ -104,7 +104,7 @@ int main()
 
    svg = svg_init( "table.svg", 566, 793 );
 
-   svg_text( svg, 50, 50, "Table of countries", "Arial", 16, 0xFF0000 );
+   svg_text( svg, 50, 50, "Table of countries", "Arial", 16, FONT_WEIGHT_NORMAL, 0xFF0000 );
 
    draw_table( svg, 50, 75, aCol, numCols, countries, numCountries );
 

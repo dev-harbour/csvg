@@ -1,5 +1,7 @@
 /*
- * Copyright 2023 Rafał Jopek ( rafaljopek at hotmail com )
+ * C Scalable Vector Graphics (CSVG) Project
+ * Copyright 2014 - 2024 Rafał Jopek
+ * Website: https://harbour.pl
  */
 
 #include "csvg.h"
@@ -230,7 +232,7 @@ void svg_numbered_arrow_xy( SVG *svg, int x1, int y1, int x2, int y3, int stroke
       int tick_length = (i % 5 == 0) ? 10 : 5; // Every fifth tick mark is longer
       svg_line(svg, x, y + tick_length, x, y, 1, color);
 
-      svg_text( svg, x + label_offset_x, y + label_offset_y, label, "Arial", 12, color );
+      svg_text( svg, x + label_offset_x, y + label_offset_y, label, "Arial", 12, FONT_WEIGHT_NORMAL, color );
    }
 
    // Adding labels and tick marks for the vertical arrow
@@ -261,7 +263,7 @@ void svg_numbered_arrow_xy( SVG *svg, int x1, int y1, int x2, int y3, int stroke
 
       if( num != 0 )  // Skip zero for the vertical arrow
       {
-         svg_text( svg, x + label_offset_x, y + label_offset_y, label, "Arial", 12, color );
+         svg_text( svg, x + label_offset_x, y + label_offset_y, label, "Arial", 12, FONT_WEIGHT_NORMAL, color );
       }
    }
 }
@@ -331,9 +333,9 @@ void svg_bezier_curve( SVG *svg, int *points, int point_count, int stroke_width,
    fprintf( svg->file, "\" stroke=\"#%06x\" stroke-width=\"%d\" fill=\"none\"/>\n", color, stroke_width );
 }
 
-void svg_text( SVG *svg, int x, int y, const char *text, const char *font, int size, unsigned int color )
+void svg_text( SVG *svg, int x, int y, const char *text, const char *font, int size, int font_weight, unsigned int color )
 {
-   fprintf( svg->file, "<text x=\"%d\" y=\"%d\" font-family=\"%s\" font-size=\"%d\" fill=\"#%06x\">%s</text>\n", x, y, font, size, color, text );
+   fprintf( svg->file, "<text x=\"%d\" y=\"%d\" font-family=\"%s\" font-size=\"%d\" font-weight=\"%d\" fill=\"#%06x\">%s</text>\n", x, y, font, size, font_weight, color & 0xFFFFFF, text );
 }
 
 /* Linear gradient */

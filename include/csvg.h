@@ -1,5 +1,7 @@
 /*
- * Copyright 2023 Rafał Jopek ( rafaljopek at hotmail com )
+ * C Scalable Vector Graphics (CSVG) Project
+ * Copyright 2014 - 2024 Rafał Jopek
+ * Website: https://harbour.pl
  */
 
 #ifndef CSVG_H
@@ -10,6 +12,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
+#define FONT_WEIGHT_THIN        100
+#define FONT_WEIGHT_EXTRA_LIGHT 200
+#define FONT_WEIGHT_LIGHT       300
+#define FONT_WEIGHT_NORMAL      400
+#define FONT_WEIGHT_MEDIUM      500
+#define FONT_WEIGHT_SEMI_BOLD   600
+#define FONT_WEIGHT_BOLD        700
+#define FONT_WEIGHT_EXTRA_BOLD  800
+#define FONT_WEIGHT_BLACK       900
 
 typedef struct _SVG  SVG;
 typedef enum   _bool bool;

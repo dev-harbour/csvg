@@ -67,7 +67,7 @@ void svg_filled_ellipse( SVG *svg, int cx, int cy, int rx, int ry, unsigned int 
 
 void svg_bezier_curve( SVG *svg, int *points, int point_count, int stroke_width, unsigned int color );
 
-void svg_text( SVG *svg, int x, int y, const char *text, const char *font, int size, unsigned int color );
+void svg_text( SVG *svg, int x, int y, const char *text, const char *font, int size, int font_weight, unsigned int color );
 
 void svg_linear_gradient( SVG *svg, const char *id, unsigned int startColor, unsigned int endColor, float x1, float y1, float x2, float y2 );
 void svg_triangle_linear_gradient( SVG *svg, int x1, int y1, int x2, int y2, int x3, int y3, unsigned int startColor, unsigned int endColor );

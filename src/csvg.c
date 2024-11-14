@@ -200,7 +200,7 @@ void svg_numbered_arrow( SVG *svg, int x1, int y1, int x2, int y2, int stroke_wi
          label_offset_x += 3;
       }
 
-      svg_text( svg, x + label_offset_x, y + label_offset_y, label, "Arial", 12, color );
+      svg_text( svg, x + label_offset_x, y + label_offset_y, label, "Arial", 12, FONT_WEIGHT_NORMAL, color );
    }
 }
 

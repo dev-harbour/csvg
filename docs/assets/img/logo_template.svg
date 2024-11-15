@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+<circle cx="256" cy="256" r="256" fill="#530972"/>
+<line x1="42" y1="131" x2="470" y2="131" style="stroke-width:30; stroke:#323232" />
+<rect x="25" y="146" width="462" height="180" fill="#f2f2f2"/>
+<line x1="25" y1="326" x2="487" y2="326" style="stroke-width:30; stroke:#323232" />
+<circle cx="256" cy="256" r="241" stroke-width="30" stroke="#323232" fill="none"/>
+<text x="130" y="266" font-family="Free Mono" font-size="140" font-weight="900" fill="#323232">C++</text>
+</svg>
